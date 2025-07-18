@@ -1,0 +1,19 @@
+# Global ignores
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.*.local
+logs/
+*.log
+
+# Frontend specific
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Backend specific
+backend/node_modules/
+backend/dist/
+backend/build/
