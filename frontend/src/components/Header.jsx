@@ -4,7 +4,7 @@ import Login from "./LoginForm"
 import { useNavigate } from "react-router-dom"
 
 const Header = () => {
-
+    console.log(import.meta.env.VITE_BACKEND_URL)
     const [role, setRole] = useState("User")
     const [profIconClicked, setProfIconClicked] = useState(false)
     const [showLoginForm, setShowLoginForm] = useState(false)
