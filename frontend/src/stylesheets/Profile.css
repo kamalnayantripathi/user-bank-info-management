@@ -184,9 +184,48 @@
     padding: 15px 0px;
     border-bottom: 1px solid rgb(207, 204, 204);
 }
-.bank-details p:last-child{
-    border-bottom: none;
+.bank-details-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 5px;
 }
+.bank-details-header-buttons{
+    display: flex;
+    gap: 4px;
+}
+.update-button{
+    background: linear-gradient(135deg, #d9ff00 0%, #8cb300 100%);
+    color: white;
+    font-size: 0.9em;
+    font-weight: bold;
+    width: 80px;
+    border-radius: 10px;
+    border-style: none;
+    padding: 10px;
+}
+.update-button:hover{
+    background: linear-gradient(135deg, #b3d301 0%, #6d8b00 100%);
+}
+.delete-button{
+    background: linear-gradient(135deg, #d16767 0%, #e40202 100%);
+    color: white;
+    font-size: 0.9em;
+    font-weight: bold;
+    width: 80px;
+    border-radius: 10px;
+    border-style: none;
+    padding: 10px;
+}
+.delete-button:hover{
+    background: linear-gradient(135deg, #c24444 0%, #af0202 100%);
+}
+@media (max-width: 768px) {
+    .update-button, .delete-button{
+        width: 80px;
+    } 
+}
+
 
 @media (max-width: 768px) {
     .account-info, .bank-account-details{

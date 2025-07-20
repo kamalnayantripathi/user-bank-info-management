@@ -1,10 +1,106 @@
 import "../stylesheets/Profile.css"
 import BankForm from "../components/BankForm"
-import { useState } from "react"
+import ConfirmPopup from "../components/ConfirmPopup"
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Profile = () => {
     const [showBankForm, setShowBankForm] = useState(false)
+    const [showPopup, setShowPopup] = useState(false);
+    const [formType, setFormType] = useState("Add")
     console.log(showBankForm)
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    const [userData, setUserData] = useState({});
+    const [userBankAccounts, setUserBankAccounts] = useState([]);
+    const [accountData, setAccountData] = useState({});
+    console.log(accountData)
+
+    const fetchUserDetails = async() => {
+        const url = import.meta.env.VITE_BACKEND_URL+"/api/current-user";
+        try { 
+            const response = await fetch(url,{
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            if(response.ok){
+                const data = await response.json();
+                console.log(data)
+                setUserData(data.user)
+            }
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
+
+    useEffect(()=>{
+        if(token && role==="User"){
+            fetchUserDetails();
+        }
+    },[])
+
+    const fetchUserBankAccounts = async() => {
+        console.log(userData)
+        const url = import.meta.env.VITE_BACKEND_URL+`/api/user/${userData._id}/accounts`;
+        try { 
+            const response = await fetch(url,{
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            if(response.ok){
+                const data = await response.json();
+                console.log(data)
+                setUserBankAccounts(data.banks)
+            }
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
+    useEffect(()=>{
+        fetchUserBankAccounts();
+    },[userData])
+
+    const confirmDelete = async() =>{
+        if(userData?._id && accountData?._id){
+            const url = import.meta.env.VITE_BACKEND_URL+`/api/user/${userData._id}/account/${accountData._id}`;
+            try { 
+                const response = await fetch(url,{
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                })
+                if(response.ok){
+                    const data = await response.json();
+                    console.log(data.message)
+                    fetchUserBankAccounts();
+                    setShowPopup(false)
+                }
+            } catch (error) {
+                toast.error(error.message);
+            }
+        }
+    }
+
+    const handleUpdateAccount = (acc) => {
+        setAccountData(acc)
+        setFormType("Update");
+        setShowBankForm(true);
+    }
+
+    const handleAddBankAccount = () => {
+        setAccountData({})
+        setFormType("Add");
+        setShowBankForm(true);
+    }
+
+    const handleDeleteBankAccount = (acc) => {
+        setAccountData(acc);
+        setShowPopup(true);
+    };
 
     return(
         <>
@@ -18,14 +114,14 @@ const Profile = () => {
                         <img className="points-image" src="white_star.png" alt="" />
                     </div>
                     <div className="profile-image-content">
-                        <h3>Rockkyy Bhaii</h3>
-                        <p>@rockkypjf0</p>
+                        <h3>{userData.username}</h3>
+                        <p>{userData.email}</p>
                     </div>
                 </div>
                 <div className="profile-content">
                     <div className="profile-content-headings">
                         <h3>My Profile</h3>
-                        <button onClick={() => setShowBankForm(!showBankForm)}>Add bank</button>
+                        <button onClick={handleAddBankAccount}>Add bank</button>
                     </div>
                     <div className="profile-content-body">
                         <div className="account-info">
@@ -36,11 +132,11 @@ const Profile = () => {
                             </div>
                             <div className="details">
                                 <p className="details-label">Username</p>
-                                <p className="details-value">@rockkypjf0</p>
+                                <p className="details-value">{userData.username}</p>
                             </div>
                             <div className="details">
                                 <p className="details-label">Email</p>
-                                <p>tripathikamalnayan3@gmail.com</p>
+                                <p>{userData.email}</p>
                             </div>
                             <div className="details">
                                 <p className="details-label">Whatsapp</p>
@@ -57,37 +153,43 @@ const Profile = () => {
                         </div>
                         <div className="bank-account-details">
                             <h3>Bank Account Details</h3>
-                            <div className="bank-details">
-                                <p><b>Account 1</b></p>
-                                <p><b>IFSC Code:</b> SBIN0001234</p>
-                                <p><b>Branch:</b> Main Branch</p>
-                                <p><b>Bank:</b> State Bank of India</p>
-                                <p><b>Account:</b> ****5678</p>
-                                <p><b>Holder:</b> Rockkyy Bhaii</p>
-                            </div>
-                            <div className="bank-details">
-                                <p><b>Account 2</b></p>
-                                <p><b>IFSC Code:</b> HDFC0001234</p>
-                                <p><b>Branch:</b> City Branch</p>
-                                <p><b>Bank:</b> HDFC Bank</p>
-                                <p><b>Account:</b> ****9012</p>
-                                <p><b>Holder:</b> Rockkyy Bhaii</p>
-                            </div>
-                            <div className="bank-details">
-                                <p><b>Account 3</b></p>
-                                <p><b>IFSC Code:</b> ICIC0001234</p>
-                                <p><b>Branch:</b> Central Branch</p>
-                                <p><b>Bank:</b> ICICI Bank</p>
-                                <p><b>Account:</b> ****3456</p>
-                                <p><b>Holder:</b> Rockkyy Bhaii</p>
-                            </div>
+                            { userBankAccounts?.map((acc, ind) => (
+                                <div key={acc._id} className="bank-details">
+                                    <p className="bank-details-header">
+                                        <b>Account {ind+1}</b>
+                                        <span className="bank-details-header-buttons">
+                                            <button onClick={()=>handleUpdateAccount(acc)} className="update-button">Update</button>
+                                            <button onClick={() => handleDeleteBankAccount(acc)} className="delete-button">Delete</button>
+                                        </span>
+                                    </p>
+                                    <p><b>IFSC Code:</b> {acc.ifscCode}</p>
+                                    <p><b>Branch:</b> {acc.branchName}</p>
+                                    <p><b>Bank:</b> {acc.bankName}</p>
+                                    <p><b>Account:</b> {acc.accountNumber}</p>
+                                    <p><b>Holder:</b> {acc.accountHolderName}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
                 { showBankForm && (
                     <div className="form-overlay">
-                        <BankForm handleFormClose={()=>setShowBankForm(!showBankForm)} />
+                        <BankForm 
+                            handleFormClose={()=>setShowBankForm(!showBankForm)} 
+                            type={formType} 
+                            accountData={accountData}
+                            token={token}
+                            loggedInUser={userData}
+                            fetchUserBankAccounts={fetchUserBankAccounts}
+                        />
                     </div>
+                )}
+                {showPopup && (
+                    <ConfirmPopup
+                        message={`Are you sure you want to delete ${accountData.bankName}?`}
+                        onConfirm={confirmDelete}
+                        onCancel={() => setShowPopup(false)}
+                    />
                 )}
             </div>
         </>

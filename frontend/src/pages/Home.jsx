@@ -1,9 +1,27 @@
-import "../stylesheets/Home.css"
+import "../stylesheets/Home.css";
 
 const Home = () => {
-    return(
+    return (
         <>
             <main>
+                {/* Notice/Disclaimer Section */}
+                <div className="notice-section">
+                    <h3>Important Information</h3>
+                    <p>
+                        If you're exploring the app, you can **register as a User** to add and manage bank accounts.
+                    </p>
+                    <p>
+                        For Admin access (view-only), use the following credentials:
+                        <br />
+                        <b>Username:</b> Task Planet  
+                        <br />
+                        <b>Password:</b> taskplanet
+                    </p>
+                    <p>
+                        Note: Admins can only view and filter bank accounts, not delete or modify them.
+                    </p>
+                </div>
+
                 <div className="main-div-update">
                     <h2>Update: Stake option is available</h2>
                 </div>
@@ -49,7 +67,7 @@ const Home = () => {
                 </div>
             </main>
         </>
-    )
-}
+    );
+};
 
 export default Home;

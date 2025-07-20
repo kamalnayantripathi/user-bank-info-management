@@ -1,39 +1,41 @@
-.bank-form-container {
+.login-form-container{
     position: fixed;
     z-index: 50;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 130px;
+    left: 60px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
     background-color: #fff;
-    border-radius: 10px 10px 0 0;
+    border-radius: 10px;
     width: 400px;
-    max-height: 80vh; 
-    overflow-y: auto; 
-    padding: 20px;
+    height: 300px;
+    margin-left: 30vw;
 }
 @media (max-width: 768px) {
-    .bank-form-container {
+    .login-form-container{
+        margin-left: 0px;
+        padding: 0 5px;
+        left: 0px;
         width: 100vw;
-        border-radius: 10px 10px 0 0;
     }
 }
 
-.form-heading{
-    width: 90%;
+.login-form-heading{
+    width: 80%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.form-heading h3{
-    font-size: large;
-    font-weight: 500;
+.login-form-input{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.form-heading button{
+.login-form-heading button{
     font-size: 16px;
     font-weight: 600;
     background-color: red;
@@ -42,18 +44,17 @@
     border-radius: 5px;
     padding: 8px;
 }
-.form-heading button:hover{
+.login-form-heading button:hover{
     background-color: rgb(218, 4, 4);
 }
-
-.bank-form{
+form{
     display: flex;
     flex-direction: column;
-    width: 90%;
-    gap: 10px;
+    width: 100%;
+    gap: 15px;
 }
 
-.bank-form input{
+form input{
     height: 40px;
     border-style: none;
     border-radius: 5px;
@@ -63,7 +64,7 @@
     padding-left: 15px;
 }
 
-.bank-form button{
+form button{
     background-color: green;
     color: White;
     width: 100%;
@@ -71,10 +72,4 @@
     border-style: none;
     border-radius: 5px;
     font-size: large;
-}
-.field-hint {
-    font-size: 12px;
-    color: gray;
-    margin-top: -10px;
-    margin-bottom: 10px;
 }

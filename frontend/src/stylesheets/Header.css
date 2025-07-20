@@ -54,6 +54,7 @@ li a{
     align-items: center;
     border-radius: 50%;
     border: 2px solid rgb(206, 203, 203);
+    position: relative;
 }
 
 .profile-icon{
@@ -140,4 +141,31 @@ li a{
         width: 45px;
         height: 45px;
     }
+}
+
+.login-signup-links{
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 110px;
+    border-radius: 5px;
+    padding: 5px;
+    height: 110px;
+    position: absolute;
+    top: 50px;
+    right: 5px;
+    border: 1px solid rgb(228, 228, 228);
+}
+.login-signup-links a{
+    border-bottom: 1px solid #cecccc;
+    width: 90%;
+    padding: 4px;
+    padding-bottom: 4px;
+}
+.login-signup-links a:last-child{
+    border-bottom: none;
+}
+.login-signup-links a:hover{
+    background-color: aliceblue;
 }
